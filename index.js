@@ -1,31 +1,24 @@
-const express = require("express");
-const pg = require("pg");
 const dotenv = require("dotenv");
+dotenv.config(); // Load env variables in .env file
 
-dotenv.config();
+const APP_PORT = process.env.APP_PORT || 3000;
 
-const app = express();
-const client = new pg.Client({
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  host: "localhost",
-  port: 5432,
-  database: process.env.POSTGRES_DB,
-});
+const app = require("./src/app")();
+const pool = require("./src/pool");
 
-app.get("/books", (req, res) => {
-  res.status(200).json({
-    name: "Staff Engineer Path",
-    price: 1200,
+pool
+  .connect({
+    host: process.env.BOOKS_PG_HOST,
+    port: process.env.BOOKS_PG_PORT,
+    database: process.env.POSTGRES_DB,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+  })
+  .then(() => {
+    app.listen(APP_PORT, async () => {
+      console.log(`Server is running on PORT ${APP_PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Something went wrong while starting the app", err);
   });
-});
-
-const PORT = 3000;
-
-app.listen(PORT, async () => {
-  await client.connect();
-
-  const res = await client.query("SELECT NOW()");
-  console.log(res);
-  console.log(`Server is running on PORT ${PORT}`);
-});
