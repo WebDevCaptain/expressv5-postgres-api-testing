@@ -1,0 +1,8 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    env_file: ".env"
+    restart: unless-stopped
+    ports:
+      - "5432:5432"

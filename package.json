@@ -1,0 +1,25 @@
+{
+  "name": "supertest-expressv5-postgres",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "node-pg-migrate",
+    "test": "jest --no-cache",
+    "dev": "node --watch-path ./ index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.0.1",
+    "pg": "^8.13.1",
+    "pg-format": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "node-pg-migrate": "^7.9.0",
+    "supertest": "^7.0.0"
+  }
+}
