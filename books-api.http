@@ -1,2 +1,32 @@
 # Get all books
 GET http://localhost:3000/books
+
+###
+
+POST http://localhost:3000/books
+Content-Type: application/json
+
+{
+    "title": "Engineering Management 101",
+    "author": "Kelly"
+}
+
+###
+
+
+GET http://localhost:3000/books/3
+
+###
+
+PUT http://localhost:3000/books/5
+Content-Type: application/json
+
+{
+    "title": "Engineering Management 102",
+    "author": "Shawn",
+    "price": 1400.50
+}
+
+###
+
+DELETE http://localhost:3000/books/4
