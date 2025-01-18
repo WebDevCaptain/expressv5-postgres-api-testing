@@ -1,5 +1,7 @@
-const express = require("express");
-const BookRepo = require("../repository/books-repo");
+import express from "express";
+
+import BookRepo from "../repository/books-repo.js";
+
 const router = express.Router();
 
 router.get("/books", async (req, res) => {
@@ -62,4 +64,4 @@ router.delete("/books/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

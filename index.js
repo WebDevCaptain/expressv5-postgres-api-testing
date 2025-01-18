@@ -1,10 +1,17 @@
-const dotenv = require("dotenv");
-dotenv.config(); // Load env variables in .env file
+import { config } from "dotenv";
+
+const ENVIRONMENT = process.env.NODE_ENV || "development";
+
+config({
+  path: `${ENVIRONMENT}.env`,
+}); // Load env variables in .env file
 
 const APP_PORT = process.env.APP_PORT || 3000;
 
-const app = require("./src/app")();
-const pool = require("./src/pool");
+import buildApp from "./src/app.js";
+import pool from "./src/pool.js";
+
+const app = buildApp();
 
 pool
   .connect({
@@ -16,7 +23,9 @@ pool
   })
   .then(() => {
     app.listen(APP_PORT, async () => {
-      console.log(`Server is running on PORT ${APP_PORT}`);
+      console.log(
+        `Server is running on PORT ${APP_PORT} in ${ENVIRONMENT} mode`
+      );
     });
   })
   .catch((err) => {

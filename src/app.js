@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
 
 // Routers
-const BooksRouter = require("./routes/books");
+import BooksRouter from "./routes/books.js";
 
-module.exports = () => {
+export default function () {
   const app = express();
 
   // Parse incoming JSON in request body
@@ -11,4 +11,4 @@ module.exports = () => {
   app.use(BooksRouter);
 
   return app;
-};
+}

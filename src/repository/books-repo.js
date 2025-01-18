@@ -1,5 +1,5 @@
-const pool = require("../pool");
-const camelcase = require("camelcase").default;
+import pool from "../pool.js";
+import camelcase from "camelcase";
 
 const toCamelCase = (rows) => {
   return rows.map((row) => {
@@ -60,4 +60,4 @@ class BookRepo {
   }
 }
 
-module.exports = BookRepo;
+export default BookRepo;
