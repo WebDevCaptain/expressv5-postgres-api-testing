@@ -38,5 +38,5 @@ it("creates 2 books", async () => {
 
   const finishCount = await BookRepo.count();
 
-  expect(finishCount - startCount).toEqual(1);
+  expect(finishCount - startCount).toEqual(2);
 });
