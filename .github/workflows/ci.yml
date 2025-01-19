@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: book_app1124
+  POSTGRES_DB: books_test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres-db:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+
+    env:
+      POSTGRES_USER: ${{ env.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ env.POSTGRES_DB }}
+      BOOKS_PG_HOST: 127.0.0.1
+      BOOKS_PG_PORT: 5432
+      NODE_ENV: testing
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm t
