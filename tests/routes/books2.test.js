@@ -15,7 +15,7 @@ afterAll(async () => {
   await context.close();
 });
 
-it("creates a book", async () => {
+it("creates 2 books", async () => {
   const startCount = await BookRepo.count();
 
   await request(buildApp())
@@ -24,6 +24,15 @@ it("creates a book", async () => {
       title: "Scikit Learn & Pytorch",
       author: "Sebastian Rashka",
       price: 1000,
+    })
+    .expect(200);
+
+  await request(buildApp())
+    .post("/books")
+    .send({
+      title: "Scikit Learn & Tensorflow",
+      author: "Gaeron",
+      price: 1400,
     })
     .expect(200);
 
