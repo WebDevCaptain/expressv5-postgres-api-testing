@@ -8,11 +8,6 @@ on:
       - main
       - dev
 
-env:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: book_app1124
-  POSTGRES_DB: books_test
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,14 +18,14 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: book_app1124
+          POSTGRES_DB: books_test
 
     env:
-      POSTGRES_USER: ${{ env.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ env.POSTGRES_DB }}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: book_app1124
+      POSTGRES_DB: books_test
       BOOKS_PG_HOST: 127.0.0.1
       BOOKS_PG_PORT: 5432
       NODE_ENV: testing
@@ -38,6 +33,9 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v4
 
       - name: Cache npm dependencies
         uses: actions/cache@v4
@@ -47,6 +45,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run migrations
+        run: DATABASE_URL=postgres://${{env.POSTGRES_USER}}:${{env.POSTGRES_PASSWORD}}@${{env.BOOKS_PG_HOST}}:${{env.BOOKS_PG_PORT}}/${{env.POSTGRES_DB}} npm run migrate up
 
       - name: Run tests
         run: npm t
